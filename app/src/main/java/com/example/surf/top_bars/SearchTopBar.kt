@@ -45,7 +45,8 @@ import com.example.surf.ui.theme.robotoFamily
 fun SearchTopBar(
     focusManager: FocusManager,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    sendRequest: (String) -> Unit
 ){
     Row(
         modifier = Modifier
@@ -136,7 +137,10 @@ fun SearchTopBar(
             keyboardOptions = KeyboardOptions.Default
                 .copy(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions (
-                onNext = {focusManager.clearFocus()}
+                onNext = {
+                    focusManager.clearFocus()
+                    sendRequest(value)
+                }
             )
         )
     }
@@ -146,10 +150,10 @@ fun SearchTopBar(
 @Composable
 fun SearchTopBarPreview() {
     SurfTheme {
-       SearchTopBar(
+       /*SearchTopBar(
            LocalFocusManager.current,
            value = "",
            onValueChange = {}
-       )
+       )*/
     }
 }

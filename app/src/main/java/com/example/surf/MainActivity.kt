@@ -6,20 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.surf.navigation.NaviBar
 import com.example.surf.navigation.NaviConstants
 import com.example.surf.navigation.Screen
+import com.example.surf.search_screen.SearchScreen
 import com.example.surf.ui.theme.SurfTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,8 +40,7 @@ fun Main(){
                 navController = navController,
                 naviBarItems = NaviConstants.BottomNaviItems
             )
-        },
-        //modifier = Modifier.padding(top = 48.dp)
+        }
     ) {
         NavHost(
             navController = navController,

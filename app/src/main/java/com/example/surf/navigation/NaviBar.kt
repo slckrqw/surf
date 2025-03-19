@@ -31,7 +31,8 @@ fun NaviBar(
 ){
     NavigationBar(
         containerColor = White,
-        modifier = Modifier.height(80.dp)
+        modifier = Modifier
+            .height(80.dp)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

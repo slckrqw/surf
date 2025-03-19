@@ -58,7 +58,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //HTTP requests
     implementation(libs.retrofit2.retrofit)
-    implementation(libs.converter.gson)
     implementation(libs.gson)
+
+    //Image Loading
+    implementation(libs.coil.compose)
+
+    //Converter
+    implementation(libs.converter.gson)
 }
