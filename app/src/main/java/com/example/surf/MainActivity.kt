@@ -10,14 +10,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.surf.navigation.NaviBar
+import com.example.surf.navigation.NaviConstants
 import com.example.surf.navigation.Screen
 import com.example.surf.ui.theme.SurfTheme
 
@@ -35,22 +36,31 @@ class MainActivity : ComponentActivity() {
 fun Main(){
     val navController = rememberNavController()
 
-    Column (
-        modifier = Modifier.fillMaxSize()
-    ){
+    Scaffold(
+        bottomBar = {
+            NaviBar(
+                navController = navController,
+                naviBarItems = NaviConstants.BottomNaviItems
+            )
+        },
+        //modifier = Modifier.padding(top = 48.dp)
+    ) {
         NavHost(
             navController = navController,
-            startDestination = Screen.Search,
+            startDestination = Screen.Search.value,
             enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
-            popEnterTransition  = { fadeIn() },
-            popExitTransition  = { fadeOut() }
-        ){
-            composable(Screen.Search.route){
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() },
+            modifier = Modifier.padding(it)
+        ) {
+            composable(Screen.Search.value) {
                 SearchScreen()
             }
+            composable(Screen.Favorite.value) {
+                FavoriteScreen()
+            }
         }
-
     }
 }
 
@@ -58,6 +68,6 @@ fun Main(){
 @Composable
 fun GreetingPreview() {
     SurfTheme {
-
+        Main()
     }
 }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">surf</string>
+    <string name="bar_item_search">Поиск</string>
+    <string name="bar_item_favorite">Избранное</string>
+    <string name="search_placeholder">Поиск</string>
+    <string name="empty_search_line">"Введите название книги, которую ищете "</string>
 </resources>
