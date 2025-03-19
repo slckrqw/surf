@@ -13,7 +13,7 @@ import retrofit2.Response
 
 class SearchScreenViewModel: ViewModel(){
 
-    var _searchUiState = MutableStateFlow(SearchScreenState())
+    private var _searchUiState = MutableStateFlow(SearchScreenState())
     val searchUiState: StateFlow<SearchScreenState> = _searchUiState.asStateFlow()
 
 

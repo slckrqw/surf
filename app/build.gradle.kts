@@ -64,6 +64,9 @@ dependencies {
 
     //Image Loading
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.network.ktor3)
+
 
     //Converter
     implementation(libs.converter.gson)
