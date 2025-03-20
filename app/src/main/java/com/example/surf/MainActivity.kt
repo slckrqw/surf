@@ -9,15 +9,21 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.surf.book_screen.BookScreen
+import com.example.surf.model.BookData
 import com.example.surf.navigation.NaviBar
 import com.example.surf.navigation.NaviConstants
 import com.example.surf.navigation.Screen
 import com.example.surf.search_screen.SearchScreen
+import com.example.surf.search_screen.SearchScreenViewModel
 import com.example.surf.ui.theme.SurfTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,29 +39,49 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Main(){
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination?.route
+    val searchScreenViewModel: SearchScreenViewModel = viewModel()
 
     Scaffold(
         bottomBar = {
-            NaviBar(
-                navController = navController,
-                naviBarItems = NaviConstants.BottomNaviItems
-            )
+            if(currentDestination != Screen.Book.value) {
+                NaviBar(
+                    navController = navController,
+                    naviBarItems = NaviConstants.BottomNaviItems
+                )
+            }
         }
     ) {
         NavHost(
             navController = navController,
             startDestination = Screen.Search.value,
-            enterTransition = { fadeIn() },
+            /*enterTransition = { fadeIn() },
             exitTransition = { fadeOut() },
             popEnterTransition = { fadeIn() },
-            popExitTransition = { fadeOut() },
+            popExitTransition = { fadeOut() },*/
             modifier = Modifier.padding(it)
         ) {
             composable(Screen.Search.value) {
-                SearchScreen()
+                SearchScreen(
+                    vm = searchScreenViewModel,
+                    navigateToBook = {
+                        navController.currentBackStackEntry?.savedStateHandle?.set("book", it)
+                        navController.navigate(Screen.Book.value)
+                    }
+                )
             }
             composable(Screen.Favorite.value) {
                 FavoriteScreen()
+            }
+            composable(Screen.Book.value){
+                val currentBook: BookData? = navController.previousBackStackEntry?.savedStateHandle?.get("book")
+                BookScreen(
+                    currentBook,
+                    returnBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

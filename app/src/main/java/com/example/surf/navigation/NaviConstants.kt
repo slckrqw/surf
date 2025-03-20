@@ -14,5 +14,6 @@ object NaviConstants {
             text = R.string.bar_item_favorite,
             route = Screen.Favorite
         )
+
     )
 }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -34,34 +35,43 @@ import com.example.surf.ui.theme.Black
 import com.example.surf.ui.theme.SurfTheme
 import com.example.surf.ui.theme.White
 import com.example.surf.ui.theme.robotoFamily
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
-    vm: SearchScreenViewModel = viewModel()
+    vm: SearchScreenViewModel = viewModel(),
+    navigateToBook: (BookData) -> Unit
 ){
     val focusManager = LocalFocusManager.current
-    var searchValue by remember{
-        mutableStateOf("")
-    }
     val state = vm.searchUiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .background(White)
             .fillMaxSize()
             .pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    focusManager.clearFocus()
-                })
+                detectTapGestures(
+                    onTap = {
+                        focusManager.clearFocus()
+                    }
+                )
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchTopBar(
             focusManager = focusManager,
-            value = searchValue,
-            onValueChange = {searchValue = it},
-            sendRequest = {vm.searchBooks(it)}
+            value = state.value.searchValue,
+            onValueChange = {vm.updateSearchValue(it)},
+            sendRequest = {
+                coroutineScope.launch {
+                    vm.searchBooks(it)
+                }
+            },
+            eraseSearchValue = {
+                vm.eraseSearchValue()
+            }
         )
-        if(searchValue.isEmpty()){
+        if(state.value.searchValue.isEmpty()){
             Box(
                 modifier = Modifier
                     .width(250.dp)
@@ -87,7 +97,8 @@ fun SearchScreen(
 
                         RowOfCards(
                             book1 = book1,
-                            book2 = book2
+                            book2 = book2,
+                            navigateToBook = navigateToBook
                         )
                     }
                 }
@@ -100,6 +111,6 @@ fun SearchScreen(
 @Composable
 fun SearchScreenPreview() {
     SurfTheme {
-        SearchScreen()
+        //SearchScreen()
     }
 }

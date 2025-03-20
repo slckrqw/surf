@@ -40,4 +40,20 @@ class SearchScreenViewModel: ViewModel(){
             }
         )
     }
+
+    fun updateSearchValue(newValue: String){
+        _searchUiState.update {
+            it.copy(
+                searchValue = newValue
+            )
+        }
+    }
+
+    fun eraseSearchValue(){
+        _searchUiState.update {
+            it.copy(
+                searchValue = ""
+            )
+        }
+    }
 }

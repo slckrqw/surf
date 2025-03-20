@@ -46,7 +46,8 @@ fun SearchTopBar(
     focusManager: FocusManager,
     value: String,
     onValueChange: (String) -> Unit,
-    sendRequest: (String) -> Unit
+    sendRequest: (String) -> Unit,
+    eraseSearchValue: () -> Unit
 ){
     Row(
         modifier = Modifier
@@ -124,7 +125,7 @@ fun SearchTopBar(
                                 modifier = Modifier
                                     .clickable(
                                         onClick = {
-                                            onValueChange("")
+                                            eraseSearchValue()
                                         }
                                     )
                             )

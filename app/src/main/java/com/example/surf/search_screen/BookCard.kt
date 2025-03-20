@@ -1,9 +1,12 @@
 package com.example.surf.search_screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,31 +23,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.surf.R
+import com.example.surf.model.BookData
 import com.example.surf.model.ImageLink
 import com.example.surf.ui.theme.Black
 import com.example.surf.ui.theme.DarkGray
 import com.example.surf.ui.theme.Gray
+import com.example.surf.ui.theme.LightGray
 import com.example.surf.ui.theme.SurfTheme
 import com.example.surf.ui.theme.White
 import com.example.surf.ui.theme.robotoFamily
 
 @Composable
 fun RowScope.BookCard(
-    thumbnail: String?,
-    author: String?,
-    title: String?
+    book: BookData,
+    startPadding: Dp,
+    endPadding: Dp,
+    navigateToBook: (BookData) -> Unit
 ){
     val textStyle = TextStyle(
         fontSize = 14.sp,
@@ -53,11 +62,18 @@ fun RowScope.BookCard(
     )
     Card(
        modifier = Modifier
+           .padding(start = startPadding, end = endPadding, bottom = 20.dp, top = 12.dp)
            .height(290.dp)
-           .weight(1f),
+           .weight(1f)
+           .clickable(
+               onClick = {
+                   navigateToBook(book)
+               }
+           ),
         colors = CardDefaults.cardColors(
             containerColor = White
-        )
+        ),
+        shape = RectangleShape
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -68,10 +84,15 @@ fun RowScope.BookCard(
                     .height(230.dp),
                 contentAlignment = Alignment.TopEnd
             ) {
-                thumbnail?.let {
+                if(book.imageLinks?.thumbnail != null){
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(thumbnail)
+                            .data(book.imageLinks.thumbnail)
+                            .diskCachePolicy(CachePolicy.ENABLED)
+                            .memoryCachePolicy(CachePolicy.ENABLED)
+                            .apply {
+                                networkCachePolicy(CachePolicy.ENABLED)
+                            }
                             .crossfade(true)
                             .build(),
                         contentDescription = null,
@@ -79,6 +100,14 @@ fun RowScope.BookCard(
                             .fillMaxSize()
                             .clip(RoundedCornerShape(16.dp)),
                         contentScale = ContentScale.Crop
+                    )
+                }
+                else{
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(LightGray)
                     )
                 }
                 IconButton(
@@ -97,7 +126,7 @@ fun RowScope.BookCard(
                     )
                 }
             }
-            author?.let {
+            book.authors?.get(0)?.let {
                 Text(
                     text = it,
                     color = DarkGray,
@@ -106,7 +135,7 @@ fun RowScope.BookCard(
                         .padding(bottom = 4.dp)
                 )
             }
-            title?.let {
+            book.title?.let {
                 Text(
                     text = it,
                     color = Black,
