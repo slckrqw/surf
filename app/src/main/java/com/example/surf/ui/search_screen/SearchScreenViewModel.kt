@@ -3,6 +3,7 @@ package com.example.surf.ui.search_screen
 import androidx.lifecycle.ViewModel
 import com.example.surf.api.BooksApi
 import com.example.surf.data.Book
+import com.example.surf.data.book_model.BookData
 import com.example.surf.data.database.BookEntity
 import com.example.surf.data.database.repository.BooksRepository
 import com.example.surf.data.book_model.BooksResponse
@@ -14,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchScreenViewModel(private val booksRepository: BooksRepository): ViewModel(){
+class SearchScreenViewModel(): ViewModel(){
 
     private var _searchUiState = MutableStateFlow(SearchScreenState())
     val searchUiState: StateFlow<SearchScreenState> = _searchUiState.asStateFlow()
@@ -58,22 +59,5 @@ class SearchScreenViewModel(private val booksRepository: BooksRepository): ViewM
                 searchValue = ""
             )
         }
-    }
-
-    fun Book.toBookEntity(): BookEntity = BookEntity(
-        id = data.id,
-        title = data.title,
-        author = data.authors?.get(0),
-        publishedDate = data.publishedDate,
-        description = data.description,
-        imageLinks = data.imageLinks
-    )
-
-    suspend fun addToFavorite(book: Book){
-        booksRepository.insertBook(book.toBookEntity())
-    }
-
-    suspend fun deleteFromFavorite(book: Book){
-        booksRepository.deleteBook(book.toBookEntity())
     }
 }

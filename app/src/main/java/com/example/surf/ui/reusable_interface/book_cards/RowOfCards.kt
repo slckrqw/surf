@@ -12,7 +12,7 @@ import com.example.surf.data.book_model.BookData
 fun RowOfCards(
     book1: BookData,
     book2: BookData?,
-    navigateToBook: (BookData) -> Unit
+    navigateToBook: (BookData) -> Unit,
 ){
     Row(
         modifier = Modifier.fillMaxWidth()

@@ -1,5 +1,7 @@
 package com.example.surf.ui.reusable_interface.book_cards
 
+import android.database.sqlite.SQLiteConstraintException
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,6 +20,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
@@ -43,6 +48,7 @@ import com.example.surf.ui.theme.LightGray
 import com.example.surf.ui.theme.SurfTheme
 import com.example.surf.ui.theme.White
 import com.example.surf.ui.theme.robotoFamily
+import kotlinx.coroutines.launch
 
 @Composable
 fun RowScope.BookCard(
@@ -50,13 +56,17 @@ fun RowScope.BookCard(
     startPadding: Dp,
     endPadding: Dp,
     navigateToBook: (BookData) -> Unit,
-    addToFavorite: (BookData) -> Unit = {}
+    //vm: BookCardViewModel = viewModel()
 ){
     val textStyle = TextStyle(
         fontSize = 14.sp,
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W400
     )
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+
     Card(
        modifier = Modifier
            .padding(start = startPadding, end = endPadding, bottom = 20.dp, top = 12.dp)
@@ -109,7 +119,21 @@ fun RowScope.BookCard(
                 }
                 IconButton(
                     onClick = {
-                        //TODO
+                        /*coroutineScope.launch {
+                            try {
+                                if (vm.isFavorite(book.id)) {
+                                    vm.deleteFromFavorite(book)
+                                    Toast.makeText(context, "Книга успешно добавлена в избранное", Toast.LENGTH_SHORT).show()
+                                }
+                                else {
+                                    vm.addToFavorite(book)
+                                    Toast.makeText(context, "Книга успешно удалена из избранного", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            catch(e: SQLiteConstraintException){
+                                Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+                            }
+                        }*/
                     },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = White

@@ -94,7 +94,7 @@ fun SearchScreen(
                         RowOfCards(
                             book1 = book1,
                             book2 = book2,
-                            navigateToBook = navigateToBook
+                            navigateToBook = navigateToBook,
                         )
                     }
                 }
