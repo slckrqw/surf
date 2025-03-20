@@ -6,6 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class BookData(
+    @SerializedName("id")
+    val id: String? = "R4aYzwEACAAJ",
     @SerializedName("title")
     val title: String? = "Фантастические звери и места их обитания.",
     @SerializedName("authors")

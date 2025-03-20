@@ -31,6 +31,7 @@ class SearchScreenViewModel: ViewModel(){
                                 books = response.body()?.books ?: emptyList()
                             )
                         }
+                        setIds()
                     }
                 }
 
@@ -52,8 +53,21 @@ class SearchScreenViewModel: ViewModel(){
     fun eraseSearchValue(){
         _searchUiState.update {
             it.copy(
+                books = emptyList(),
                 searchValue = ""
             )
         }
+    }
+
+    fun setIds(){
+       /* _searchUiState.value.books.forEach { book->
+            var id = (1..1000000000).random()
+            while(_searchUiState.value.usedIds.contains(id))
+            {
+                id = (1..1000000000).random()
+            }
+
+            book.data.localId = id
+        }*/
     }
 }
