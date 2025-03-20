@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -17,13 +15,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.surf.book_screen.BookScreen
-import com.example.surf.model.BookData
-import com.example.surf.navigation.NaviBar
-import com.example.surf.navigation.NaviConstants
-import com.example.surf.navigation.Screen
-import com.example.surf.search_screen.SearchScreen
-import com.example.surf.search_screen.SearchScreenViewModel
+import com.example.surf.ui.book_screen.BookScreen
+import com.example.surf.data.book_model.BookData
+import com.example.surf.ui.reusable_interface.bars.NaviBar
+import com.example.surf.data.navigation.NaviConstants
+import com.example.surf.data.navigation.Screen
+import com.example.surf.ui.favorite_screen.FavoriteScreen
+import com.example.surf.ui.search_screen.SearchScreen
+import com.example.surf.ui.search_screen.SearchScreenViewModel
 import com.example.surf.ui.theme.SurfTheme
 
 class MainActivity : ComponentActivity() {
